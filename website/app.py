@@ -3,6 +3,8 @@ from website.tc_kimlik_generator import tc_kimlik_no_uret
 
 __all__ = ["create_app"]
 
+result = []
+
 
 def create_app():
     app = Flask(__name__)
@@ -12,13 +14,11 @@ def create_app():
     def my_form():
         return render_template('index.html')
 
-    @app.route('/result', methods=['GET', 'POST'])  # GET ve POST isteklerine izin veriliyor
+    @app.route('/result', methods=['GET'])  # GET isteklerine izin veriliyor
     def tc():
-        result = []
-        if request.method == 'POST':  # İstek türü kontrol ediliyor
-            number = int(request.form.get('number', 0))
-            for i in range(number):
-                result.append(tc_kimlik_no_uret())
+        number = int(request.form.get('number', 0))
+        for i in range(number):
+            result.append(tc_kimlik_no_uret())
         return render_template('result.html', result=result)
 
     return app
