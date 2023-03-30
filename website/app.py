@@ -12,12 +12,13 @@ def create_app():
     def my_form():
         return render_template('index.html')
 
-    @app.route('/result', methods=['GET'])
+    @app.route('/result', methods=['GET', 'POST'])  # GET ve POST isteklerine izin veriliyor
     def tc():
         result = []
-        number = int(request.args.get('number', 0))
-        for i in range(number):
-            result.append(tc_kimlik_no_uret())
+        if request.method == 'POST':  # İstek türü kontrol ediliyor
+            number = int(request.form.get('number', 0))
+            for i in range(number):
+                result.append(tc_kimlik_no_uret())
         return render_template('result.html', result=result)
 
     return app
